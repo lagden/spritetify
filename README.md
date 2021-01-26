@@ -54,7 +54,7 @@ $ npx spritetify -d dir/with/svg/files -o dir/of/sprite/file.svg -c
 ### API
 
 ```js
-const spritetify = require('@tadashi/svg-sprite');
+const spritetify = require('@tadashi/spritetify');
 
 (async () => {
   const data = await spritetify('dir/with/svg/files')
