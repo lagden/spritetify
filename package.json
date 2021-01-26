@@ -17,7 +17,7 @@
     "pretest": "eslint",
     "test": "ava",
     "precoverage": "npm run pretest",
-    "coverage": "nyc --reporter=text-summary --reporter=lcov ava"
+    "coverage": "nyc --reporter=text --reporter=lcov ava"
   },
   "keywords": [
     "svg",

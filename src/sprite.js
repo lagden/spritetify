@@ -24,10 +24,6 @@ async function spritetify(inputDir, outputFile, options = {}) {
 	// prepare svgo
 	const plugins = plugin(options)
 	const svgo = new SVGO({
-		js2svg: {
-			pretty: options?.pretty ?? true,
-			indent: 2
-		},
 		plugins
 	})
 
