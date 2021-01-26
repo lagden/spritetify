@@ -9,6 +9,7 @@
   "files": [
     "LICENSE",
     "README.md",
+    "spritetify.config.json",
     "bin/cli.js",
     "src"
   ],
