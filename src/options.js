@@ -1,5 +1,3 @@
-'use strict'
-
 // default SVGO options
 const svgo_default_options = {
 	cleanupAttrs: true,
@@ -37,8 +35,8 @@ const svgo_default_options = {
 	removeDimensions: true,
 	removeXMLNS: true,
 	removeAttrs: {
-		attrs: '(stroke|fill)'
-	}
+		attrs: '(stroke|fill)',
+	},
 }
 
-module.exports = svgo_default_options
+export default svgo_default_options

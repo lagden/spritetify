@@ -1,6 +1,5 @@
-'use strict'
-
-const cheerio = require('cheerio')
+import {optimize} from 'svgo'
+import cheerio from 'cheerio'
 
 // Convert svg code to symbol
 function createSymbol(code, symbolId) {
@@ -17,13 +16,13 @@ function createSymbol(code, symbolId) {
 }
 
 // Optimize and return symbol
-async function svgSymbol(id, buf, svgo) {
+async function svgSymbol(id, buf, plugins) {
 	let symbol = ''
-	const {data} = await svgo.optimize(buf)
+	const {data} = optimize(buf, {plugins})
 	if (data) {
 		symbol = createSymbol(data, id)
 	}
 	return symbol
 }
 
-module.exports = svgSymbol
+export default svgSymbol

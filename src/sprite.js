@@ -1,13 +1,12 @@
-'use strict'
-
-const {promisify} = require('util')
-const fs = require('fs')
-const stream = require('stream')
-const	path = require('path')
-const Svgo = require('svgo')
-const plugin = require('./plugin')
-const filter = require('./filter')
-const parse = require('./parse')
+import process from 'node:process'
+import {URL} from 'node:url'
+import {promisify} from 'node:util'
+import fs from 'node:fs'
+import stream from 'node:stream'
+import path from 'node:path'
+import plugin from './plugin.js'
+import filter from './filter.js'
+import parse from './parse.js'
 
 const pipeline = promisify(stream.pipeline)
 
@@ -17,22 +16,21 @@ async function spritetify(inputDir, outputFile, options = {}) {
 		throw new Error('"inputDir" must be set')
 	}
 
+	const cwd = process.cwd()
+
 	// get svg files
-	const _dir = path.resolve(process.cwd(), inputDir)
+	const _dir = path.resolve(cwd, inputDir)
 	const files = await filter(_dir)
 
-	// prepare svgo
+	// prepare svgo plugins
 	const plugins = plugin(options)
-	const svgo = new Svgo({
-		plugins
-	})
 
 	// set symbol id
 	const _id = options?.id ?? '%s'
 	const symbols = files.map(({file, buf}) => {
 		const base = path.basename(file, '.svg')
 		const id = _id.replace('%s', base)
-		return parse(id, buf, svgo)
+		return parse(id, buf, plugins)
 	})
 
 	// build sprite
@@ -46,9 +44,10 @@ async function spritetify(inputDir, outputFile, options = {}) {
 
 	if (outputFile) {
 		// write content in file
+		const _outputFile = new URL(path.resolve(cwd, outputFile), import.meta.url)
 		await pipeline(
 			stream.Readable.from(outData),
-			fs.createWriteStream(path.resolve(process.cwd(), outputFile))
+			fs.createWriteStream(_outputFile),
 		)
 
 		return 'sprite generated successfully'
@@ -57,4 +56,4 @@ async function spritetify(inputDir, outputFile, options = {}) {
 	return outData
 }
 
-module.exports = spritetify
+export default spritetify

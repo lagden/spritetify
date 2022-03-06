@@ -1,8 +1,6 @@
-'use strict'
-
-const fs = require('fs')
-const path = require('path')
-const isSvg = require('is-svg')
+import fs from 'node:fs'
+import path from 'node:path'
+import isSvg from 'is-svg'
 
 // validate if file is SVG
 async function _analyse(file) {
@@ -16,7 +14,7 @@ async function _analyse(file) {
 		}
 	} finally {
 		/* istanbul ignore next */
-		if (filehandle !== undefined) {
+		if (filehandle?.close) {
 			await filehandle.close()
 		}
 	}
@@ -37,4 +35,4 @@ async function svgOnly(dir) {
 	return svgFiles
 }
 
-module.exports = svgOnly
+export default svgOnly

@@ -1,13 +1,19 @@
 #!/usr/bin/env node
 
-'use strict'
+import process from 'node:process'
+import {URL} from 'node:url'
+import fs from 'node:fs'
+import path from 'node:path'
+import {Command} from 'commander'
+import chalk from 'chalk'
+import sprite from '../src/sprite.js'
+// import pkg from '../package.json' assert {type: 'json'}
 
-const fs = require('fs')
-const	path = require('path')
-const {Command} = require('commander')
-const chalk = require('chalk')
-const sprite = require('../src/sprite')
-const pkg = require('../package.json')
+const pkg = JSON.parse(
+	await fs.promises.readFile(
+		new URL('../package.json', import.meta.url),
+	),
+)
 
 const _fail = chalk.bold.red
 const _ok = chalk.bold.green
@@ -29,11 +35,16 @@ async function run(opts) {
 	try {
 		const {inputDir, outputFile, configFile} = opts
 		let options = {}
+
 		if (configFile) {
 			const _file = configFile === true ? 'spritetify.config.json' : configFile
-			const configJSON = await fs.promises.readFile(path.resolve(process.cwd(), _file))
-			options = JSON.parse(configJSON)
+			options = JSON.parse(
+				await fs.promises.readFile(
+					new URL(path.resolve(process.cwd(), _file), import.meta.url),
+				),
+			)
 		}
+
 		const message = await sprite(inputDir, outputFile, options)
 		ok(message, outputFile)
 	} catch (error) {
@@ -41,18 +52,16 @@ async function run(opts) {
 	}
 }
 
-(async () => {
-	program
-		.name('spritetify')
-		.version(pkg.version)
-		.description(pkg.description)
-		.passThroughOptions()
-		.requiredOption('-d, --inputDir <dir>', 'directory with the SVG files')
-		.option('-o, --outputFile <file>', 'name with path of output file')
-		.option('-c, --configFile [json]', 'plugin options')
+program
+	.name('spritetify')
+	.version(pkg.version)
+	.description(pkg.description)
+	.passThroughOptions()
+	.requiredOption('-d, --inputDir <dir>', 'directory with the SVG files')
+	.option('-o, --outputFile <file>', 'name with path of output file')
+	.option('-c, --configFile [json]', 'plugin options')
 
-	await program.parseAsync(process.argv)
+await program.parseAsync(process.argv)
 
-	const options = program.opts()
-	await run(options)
-})()
+const options = program.opts()
+await run(options)
