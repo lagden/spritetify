@@ -54,12 +54,10 @@ $ npx spritetify -d dir/with/svg/files -o dir/of/sprite/file.svg -c
 ### API
 
 ```js
-const spritetify = require('@tadashi/spritetify');
+import spritetify from '@tadashi/spritetify'
 
-(async () => {
-  const data = await spritetify('dir/with/svg/files')
-  // => <svg width="0" height="0" display="none" version="1.1...
-})()
+const data = await spritetify('dir/with/svg/files')
+// => <svg width="0" height="0" display="none" version="1.1...
 ```
 
 #### spritetify(inputDir \[, outputFile\] \[, options\]):String
