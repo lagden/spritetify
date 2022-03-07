@@ -2,13 +2,13 @@ import {optimize} from 'svgo'
 import cheerio from 'cheerio'
 
 // Convert svg code to symbol
-function createSymbol(code, symbolId) {
+function createSymbol(code, id) {
 	const markup = cheerio.load(code, {xmlMode: true})
 	const svgMarkup = markup('svg')
 
 	markup('svg').replaceWith('<symbol/>')
 	markup('symbol')
-		.attr('id', symbolId)
+		.attr('id', id)
 		.attr('viewBox', svgMarkup.attr('viewBox'))
 		.append(svgMarkup.children())
 
@@ -16,9 +16,9 @@ function createSymbol(code, symbolId) {
 }
 
 // Optimize and return symbol
-async function svgSymbol(id, buf, plugins) {
+async function svgSymbol(id, buf, config) {
 	let symbol = ''
-	const {data} = optimize(buf, {plugins})
+	const {data} = optimize(buf, config)
 	if (data) {
 		symbol = createSymbol(data, id)
 	}

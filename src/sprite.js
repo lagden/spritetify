@@ -11,7 +11,7 @@ import parse from './parse.js'
 const pipeline = promisify(stream.pipeline)
 
 // Create SVG sprite file from directory
-async function spritetify(inputDir, outputFile, options = {}) {
+async function spritetify(inputDir, outputFile, config = {}) {
 	if (!inputDir) {
 		throw new Error('"inputDir" must be set')
 	}
@@ -23,14 +23,16 @@ async function spritetify(inputDir, outputFile, options = {}) {
 	const files = await filter(_dir)
 
 	// prepare svgo plugins
-	const plugins = plugin(options)
+	config.plugins = plugin(config?.plugins ?? [])
 
 	// set symbol id
-	const _id = options?.id ?? '%s'
+	const _id = config?.id ?? '%s'
+	Reflect.deleteProperty(config, 'id')
+
 	const symbols = files.map(({file, buf}) => {
 		const base = path.basename(file, '.svg')
 		const id = _id.replace('%s', base)
-		return parse(id, buf, plugins)
+		return parse(id, buf, config)
 	})
 
 	// build sprite

@@ -1,21 +1,12 @@
 import _options from './options.js'
 
 // Merge SVGO plugins options
-function plugins(opts) {
-	const merge = {
-		..._options,
-		...opts,
-		cleanupIDs: true,
-		removeDimensions: true,
-		removeViewBox: false,
+function plugins(config) {
+	if (Array.isArray(config)) {
+		return [..._options, ...config]
 	}
-	return Object.entries(merge).map(([plugin, v]) => {
-		const more = typeof v === 'boolean' ? {active: v} : {active: true, params: v}
-		return {
-			name: plugin,
-			...more,
-		}
-	})
+
+	return _options
 }
 
 export default plugins

@@ -1,4 +1,6 @@
 {
   "id": "my_app_%s",
-  "removeTitle": false
+  "plugins": [
+    "removeTitle"
+  ]
 }
