@@ -1,5 +1,4 @@
 import process from 'node:process'
-import {URL} from 'node:url'
 import {promisify} from 'node:util'
 import fs from 'node:fs'
 import stream from 'node:stream'
@@ -46,7 +45,7 @@ async function spritetify(inputDir, outputFile, config = {}) {
 
 	if (outputFile) {
 		// write content in file
-		const _outputFile = new URL(path.resolve(cwd, outputFile), import.meta.url)
+		const _outputFile = path.resolve(cwd, outputFile)
 		await pipeline(
 			stream.Readable.from(outData),
 			fs.createWriteStream(_outputFile),
