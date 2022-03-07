@@ -92,7 +92,9 @@ The remaining options are the same of [SVGO](https://github.com/svg/svgo#what-it
 ```json
 {
   "id": "my_app_%s",
-  "removeTitle": false
+  "plugins": [
+    "removeTitle"
+  ]
 }
 ```
 
