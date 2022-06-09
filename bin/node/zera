@@ -63,8 +63,11 @@ rm -rf \
 	"${CURR_FOLDER}/.yarn" \
 	"${CURR_FOLDER}/.pnp.*"
 
-if [ "${ACTION}" = "yarn" ] && $GEN; then
-	echo "nodeLinker: node-modules" > "${CURR_FOLDER}/.yarnrc.yml"
+if [ "${ACTION}" = "yarn" ]; then
+	yarn set version stable
+	if $GEN; then
+		echo "nodeLinker: node-modules" > "${CURR_FOLDER}/.yarnrc.yml"
+	fi
 fi
 
 $ACTION install

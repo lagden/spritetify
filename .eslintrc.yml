@@ -1,10 +1,10 @@
 root: true
 env:
-  es2021: true
+  es2022: true
   node: true
 parser: '@babel/eslint-parser'
 parserOptions:
-  ecmaVersion: 12
+  ecmaVersion: 13
   sourceType: module
 extends:
   - xo
@@ -36,7 +36,6 @@ rules:
   unicorn/prevent-abbreviations: off
   unicorn/no-reduce: off
   unicorn/no-array-reduce: off
-  unicorn/prefer-module: off
   # unicorn/no-abusive-eslint-disable: off
   # Bug no ctx.body Koa
   require-atomic-updates: off
