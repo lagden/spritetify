@@ -1,4 +1,5 @@
 import process from 'node:process'
+import {pathToFileURL, fileURLToPath} from 'node:url'
 import {promisify} from 'node:util'
 import fs from 'node:fs'
 import stream from 'node:stream'
@@ -18,7 +19,7 @@ async function spritetify(inputDir, outputFile, config = {}) {
 	const cwd = process.cwd()
 
 	// get svg files
-	const _dir = path.resolve(cwd, inputDir)
+	const _dir = pathToFileURL(path.resolve(cwd, inputDir))
 	const files = await filter(_dir)
 
 	// prepare svgo plugins
@@ -29,7 +30,7 @@ async function spritetify(inputDir, outputFile, config = {}) {
 	Reflect.deleteProperty(config, 'id')
 
 	const symbols = files.map(({file, buf}) => {
-		const base = path.basename(file, '.svg')
+		const base = path.basename(fileURLToPath(file), '.svg')
 		const id = _id.replace('%s', base)
 		return parse(id, buf, config)
 	})
@@ -45,7 +46,7 @@ async function spritetify(inputDir, outputFile, config = {}) {
 
 	if (outputFile) {
 		// write content in file
-		const _outputFile = path.resolve(cwd, outputFile)
+		const _outputFile = pathToFileURL(path.resolve(cwd, outputFile))
 		await pipeline(
 			stream.Readable.from(outData),
 			fs.createWriteStream(_outputFile),

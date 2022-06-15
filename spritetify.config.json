@@ -3,16 +3,18 @@
   "multipass": true,
   "plugins": [
     {
-      "name": "preset-default",
+      "name": "removeTitle"
+    },
+    {
+      "name": "removeAttrs",
       "params": {
-        "overrides": {
-          "removeTitle": false,
-          "removeAttrs": {
-            "params": {
-              "attrs": "(fill|stroke)"
-            }
-          }
-        }
+        "attrs": "(fill|stroke)"
+      }
+    },
+    {
+      "name": "sortAttrs",
+      "params": {
+        "xmlnsOrder": "alphabetical"
       }
     }
   ]

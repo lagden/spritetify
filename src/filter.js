@@ -1,3 +1,4 @@
+import {pathToFileURL, fileURLToPath} from 'node:url'
 import fs from 'node:fs'
 import path from 'node:path'
 import isSvg from 'is-svg'
@@ -31,7 +32,7 @@ async function _filter(arr, predicate) {
 // return only SVG files from directory
 async function svgOnly(dir) {
 	const files = await fs.promises.readdir(dir)
-	const svgFiles = await _filter(files, file => _analyse(path.join(dir, file)))
+	const svgFiles = await _filter(files, file => _analyse(pathToFileURL(path.resolve(fileURLToPath(dir), file))))
 	return svgFiles
 }
 

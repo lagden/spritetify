@@ -1,19 +1,16 @@
 #!/usr/bin/env node
 
 import process from 'node:process'
-import {URL} from 'node:url'
-import fs from 'node:fs'
 import path from 'node:path'
+import {pathToFileURL} from 'node:url'
+import {readFile} from 'node:fs/promises'
 import {Command} from 'commander'
 import chalk from 'chalk'
 import sprite from '../src/sprite.js'
-// import pkg from '../package.json' assert {type: 'json'}
 
-const pkg = JSON.parse(
-	await fs.promises.readFile(
-		new URL('../package.json', import.meta.url),
-	),
-)
+const packageFile = pathToFileURL(path.resolve(process.cwd(), 'package.json'))
+const packageBuf = await readFile(packageFile)
+const pkg = JSON.parse(packageBuf)
 
 const _fail = chalk.bold.red
 const _ok = chalk.bold.green
@@ -38,11 +35,9 @@ async function run(opts) {
 
 		if (configFile) {
 			const _file = configFile === true ? 'spritetify.config.json' : configFile
-			options = JSON.parse(
-				await fs.promises.readFile(
-					new URL(path.resolve(process.cwd(), _file), import.meta.url),
-				),
-			)
+			const optionsFile = pathToFileURL(path.resolve(process.cwd(), _file))
+			const optionsBuf = await readFile(packageFile)
+			options = JSON.parse(packageBuf)
 		}
 
 		const message = await sprite(inputDir, outputFile, options)

@@ -1,13 +1,16 @@
-import fs from 'node:fs'
-import {URL, fileURLToPath} from 'node:url'
+import path from 'node:path'
+import {readFile} from 'node:fs/promises'
+import {
+	URL,
+	fileURLToPath,
+	pathToFileURL,
+} from 'node:url'
 import test from 'ava'
 import spritetify from '../src/sprite.js'
 
-const config = JSON.parse(
-	await fs.promises.readFile(
-		new URL('../spritetify.config.json', import.meta.url),
-	),
-)
+const configFile = pathToFileURL(path.resolve(process.cwd(), 'spritetify.config.json'))
+const configBuf = await readFile(configFile)
+const config = JSON.parse(configBuf)
 
 const fixture = fileURLToPath(new URL('__fixture', import.meta.url))
 const outputFile = fileURLToPath(new URL('__fixture/out.svg', import.meta.url))
@@ -19,7 +22,7 @@ test('basic', async t => {
 
 test('out', async t => {
 	const message = await spritetify(fixture, outputFile, config)
-	const data = await fs.promises.readFile(outputFile)
+	const data = await readFile(outputFile)
 	t.snapshot(data.toString())
 	t.is(message, 'sprite generated successfully')
 })
