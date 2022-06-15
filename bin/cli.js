@@ -36,8 +36,8 @@ async function run(opts) {
 		if (configFile) {
 			const _file = configFile === true ? 'spritetify.config.json' : configFile
 			const optionsFile = pathToFileURL(path.resolve(process.cwd(), _file))
-			const optionsBuf = await readFile(packageFile)
-			options = JSON.parse(packageBuf)
+			const optionsBuf = await readFile(optionsFile)
+			options = JSON.parse(optionsBuf)
 		}
 
 		const message = await sprite(inputDir, outputFile, options)
