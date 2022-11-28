@@ -12,8 +12,10 @@ const configFile = pathToFileURL(path.resolve(process.cwd(), 'spritetify.config.
 const configBuf = await readFile(configFile)
 const config = JSON.parse(configBuf)
 
+// import config from '../spritetify.config.json' assert {type: 'json'}
+
 const fixture = fileURLToPath(new URL('__fixture', import.meta.url))
-const outputFile = fileURLToPath(new URL('__fixture/out.svg', import.meta.url))
+const outputFile = fileURLToPath(new URL('__fixture/out/sprite.svg', import.meta.url))
 
 test('basic', async t => {
 	const out = await spritetify(fixture)
