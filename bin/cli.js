@@ -8,7 +8,7 @@ import {Command} from 'commander'
 import chalk from 'chalk'
 import sprite from '../src/sprite.js'
 
-const packageFile = pathToFileURL(path.resolve(process.cwd(), 'package.json'))
+const packageFile = new URL('../package.json', import.meta.url)
 const packageBuf = await readFile(packageFile)
 const pkg = JSON.parse(packageBuf)
 
